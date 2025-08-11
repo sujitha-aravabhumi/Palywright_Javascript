@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "types": [
+      "node",
+      "@playwright/test"
+    ]
+  },
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
