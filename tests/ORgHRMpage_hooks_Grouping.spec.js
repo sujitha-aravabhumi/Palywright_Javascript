@@ -11,25 +11,29 @@ console.log("testing");
 });
 
 const baseURLs = [
-    '/admin/viewAdminModule',
-    '/pim/viewPimModule', 
-     '/leave/viewLeaveModule', 
-    '/recruitment/viewRecruitmentModule', 
-    '/myinfo/viewMyDetails', 
-    '/performance/viewPerformanceModule', 
-    '/dashboard', 
-    '/directory/viewDirectory', 
-    '/maintenance/viewMaintenanceModule',
-    '/claim/viewClaimModule', 
-    '/buzz/viewBuzz'
-];
-baseURLs.forEach(urlPath => {
-    test(`verify menu for ${urlPath}`, async ({ page }) => {
+        {name: 'Admin', urlPath: '/admin/viewSystemUsers'},
+        {name: 'PIM', urlPath: '/pim/viewEmployeeList' },
+        {name: 'Leave', urlPath: '/leave/viewLeaveList' },
+        {name: 'Time', urlPath: '/time/viewEmployeeTimesheet' },
+        {name: 'Recruitment', urlPath: '/recruitment/viewCandidates' },
+        {name: 'My Info', urlPath: 'pim/viewPersonalDetails/empNumber/7' },
+        {name: 'Performance', urlPath: '/performance/searchEvaluatePerformanceReview' },
+        {name: 'Dashboard', urlPath: 'dashboard/index' },
+        {name: 'Directory', urlPath: '/directory/viewDirectory' },
+       // {name: 'Main', urlPath: '/performance/searchEvaluatePerformanceReview' },
+        {name: 'Claim', urlPath: '/claim/viewAssignClaim' },
+        {name: 'Buzz', urlPath: '/buzz/viewBuzz' },
+       
+    
+    ];
+
+baseURLs.forEach(data => {
+    test(`verify menu for ${data.name}`, async ({ page }) => {
         // urlPath is now the single string from the array, e.g., '/admin/viewAdminModule'
-        await page.locator(`a[href*="${urlPath}"]`).click();
-        const regex = new RegExp(urlPath);
+        await page.getByRole(`link`, {name:data.name, exact : true}).click();
+        const regex = new RegExp(data.urlPath);
         await expect(page).toHaveURL(regex);
-        console.log(`Mapsd to ${urlPath}`);
+        console.log(`Mapped to ${data.urlPath}`);
     });
 });   
 
@@ -46,9 +50,11 @@ baseURLs.forEach(urlPath => {
 
 test.afterEach('afterEach', async({page}) => {
     console.log('execute after each TCs');
-    const logOutLink = page.getByRole('link', {name: 'Logout'});
+    await page.locator('.oxd-userdropdown-name').click();
+    const logOutLink = page.getByText('Logout')
     if(await logOutLink.isVisible()){
         await logOutLink.click();
+        console.log('lotout link is clicked');
 
     } else {
         console.log('lotout link is not visible');
