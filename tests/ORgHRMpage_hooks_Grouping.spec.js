@@ -7,6 +7,7 @@ await page.getByPlaceholder('password').fill('admin123');
 await page.getByRole('button', {name:'Login'}).click();
 await page.waitForURL('https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index');
 console.log('execute before each TCs');
+console.log("testing");
 });
 
 const baseURLs = [
